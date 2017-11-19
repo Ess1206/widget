@@ -1,3 +1,4 @@
+import Report.CreateHtmlDocument;
 import core.BrowserFactory;
 
 import org.apache.http.cookie.SetCookie;
@@ -13,22 +14,28 @@ public class FindAllLinks extends BrowserFactory{
     @Test
     public void SearchAll() {
 
-        driver.get("https://iz.ru/");
+        //driver.get("https://iz.ru/");
+        driver.get("https://google.com/");
+
 
         Cookie ck1 = new Cookie("_io_widget:", "aaqpDPvdHDFi2jjfUwpapvtWJnsMmgSw");
-        Cookie ck2 = new Cookie("__io_widget_introduced:", "true");
-        driver.manage().addCookie(ck1);
-        driver.manage().addCookie(ck2);
+        Cookie ck2 = new Cookie("_io_widget_introduced:", "true");
+        driver().manage().addCookie(ck1);
+        driver().manage().addCookie(ck2);
 
-        driver.get("https://iz.ru/");
+       // driver.navigate().refresh();
 
         List<WebElement> links = driver.findElements(By.tagName("a"));
 
-        System.out.println(links.size());
+        int linksCount = links.size();
+        System.out.println(linksCount);
 
-        for (int i = 0; i<links.size(); i++)
+        for (int i = 0; i<linksCount; i++)
         {
             System.out.println(links.get(i).getText());
+            CreateHtmlDocument.AddLinkToReport(i , links.get(i).getText(), false);
         }
+        CreateHtmlDocument.GenerateReport();
+        System.out.println("End");
     }
 }
